@@ -53,7 +53,7 @@ T_IDXS_LST = [index_function(idx, max_val=MAX_T, max_idx=N) for idx in range(N+1
 T_IDXS = np.array(T_IDXS_LST)
 FCW_IDXS = T_IDXS < 5.0
 T_DIFFS = np.diff(T_IDXS, prepend=[0.])
-COMFORT_BRAKE = 2.2
+COMFORT_BRAKE = 2.5
 STOP_DISTANCE = 5.0
 CRUISE_MIN_ACCEL = -0.8
 CRUISE_MAX_ACCEL = 1.3
@@ -61,12 +61,12 @@ CRUISE_MAX_ACCEL = 1.3
 # === 新增：根據車速動態調整 COMFORT_BRAKE ===
 def get_comfort_brake(v_ego):
   v_kmh = v_ego * 3.6
-  if v_kmh <= 60:
-    return 2.1
-  elif v_kmh >= 80:
+  if v_kmh <= 40:
+    return 2.9
+  elif v_kmh >= 60:
     return 2.5
   else:
-    return 2.1 + (v_kmh - 60) * (2.5 - 2.1) / (80 - 60)
+    return 2.9 - (v_kmh - 40) * (2.9 - 2.5) / (60 - 40)
 
 def get_jerk_factor(personality=log.LongitudinalPersonality.standard):
   if personality==log.LongitudinalPersonality.relaxed:
